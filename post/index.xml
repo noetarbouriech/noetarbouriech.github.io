@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Noé Tarbouriech's Website</title><link>https://noe-t.dev/post/</link><description>Recent content in Posts on Noé Tarbouriech's Website</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 24 Jul 2023 14:42:00 +0000</lastBuildDate><atom:link href="https://noe-t.dev/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Creating a cat generator website in Go using htmx</title><link>https://noe-t.dev/posts/creating-a-go-htmx-app/</link><pubDate>Mon, 24 Jul 2023 14:42:00 +0000</pubDate><guid>https://noe-t.dev/posts/creating-a-go-htmx-app/</guid><description>&lt;img src="https://noe-t.dev/posts/creating-a-go-htmx-app/cover.jpg" alt="Featured image of post Creating a cat generator website in Go using htmx" />&lt;p>⚠️ This is just a temporary post that will probably get deleted in the future.&lt;/p>
+&lt;h2 id="what-is-htmx">What is htmx&lt;/h2>
+&lt;p>To quote the creators of htmx:&lt;/p>
+&lt;blockquote>
+&lt;p>htmx gives you access to AJAX, CSS Transitions, WebSockets and Server Sent Events directly in HTML, using attributes, so you can build modern user interfaces with the simplicity and power of hypertext&lt;/p>
+&lt;/blockquote>
+&lt;p>You can find more about it &lt;a class="link" href="https://htmx.org/" target="_blank" rel="noopener"
+>here&lt;/a>.&lt;/p>
+&lt;h2 id="the-application">The application&lt;/h2>
+&lt;h3 id="why">Why?&lt;/h3>
+&lt;p>This app was built almost entirely by ChatGPT as part of a test for a school project named &lt;strong>PaaSTech&lt;/strong>. It&amp;rsquo;s a PaaS like Heroku that you can try out there: &lt;a class="link" href="https://paastech.cloud/" target="_blank" rel="noopener"
+>PaaSTech.cloud&lt;/a>&lt;/p>
+&lt;h3 id="how-does-it-work">How does it work?&lt;/h3>
+&lt;p>When you access the application through the browser, it presents a simple webpage with a button and an image of a random cat fetched from &amp;ldquo;The Cat API&amp;rdquo;. You can change the image by simply pressing the button.&lt;/p>
+&lt;p>This application only consists of a few functions and basic standard libraries from Go.&lt;/p>
+&lt;p>The core of this program resides in this &lt;code>catHandler&lt;/code> function which is served on &amp;lsquo;/&amp;rsquo;. This function is responsible for serving the main HTML page with a random cat image and a button to fetch a new cat image.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-go" data-lang="go">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">func&lt;/span> &lt;span class="nf">catHandler&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span> &lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">ResponseWriter&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">r&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">Request&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">cat&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="nx">Cat&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="nx">ImageURL&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nf">getRandomCatImageURL&lt;/span>&lt;span class="p">()}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">tmpl&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">:=&lt;/span> &lt;span class="nx">template&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">New&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;index&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nf">Parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">`
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;!DOCTYPE html&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;html&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;head&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;title&amp;gt;Random Cat Generator&amp;lt;/title&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;script src=&amp;#34;https://unpkg.com/htmx.org/dist/htmx.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;/head&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;body&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;h1&amp;gt;Random Cat Generator&amp;lt;/h1&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;button id=&amp;#34;change-button&amp;#34; hx-get=&amp;#34;/change&amp;#34; hx-swap=&amp;#34;innerHTML&amp;#34; hx-target=&amp;#34;#cat-image&amp;#34;&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> Change Cat
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;/button&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;div id=&amp;#34;cat-image&amp;#34;&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;img src=&amp;#34;&lt;/span>&lt;span class="cp">{{&lt;/span>&lt;span class="na">.ImageURL&lt;/span>&lt;span class="cp">}}&lt;/span>&lt;span class="s">&amp;#34; alt=&amp;#34;Random Cat&amp;#34; width=&amp;#34;300&amp;#34;&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;/div&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;/body&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;/html&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> `&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">err&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Error&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">StatusInternalServerError&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">err&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="nx">tmpl&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Execute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">cat&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="nx">err&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="kc">nil&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">w&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">err&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Error&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="nx">http&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">StatusInternalServerError&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>What&amp;rsquo;s interesting about this snippet are the htmx tags in the html (all the &lt;code>hx-...&lt;/code>).
+Using &lt;code>hx-get&lt;/code>, we can directly send a get request to the &amp;lsquo;/change&amp;rsquo; endpoint without needing any fetch, axios, etc. The result of this request is then used to replace the inner HTML of the div below as stated by &lt;code>hx-swap&lt;/code> and &lt;code>hx-target&lt;/code>. All of this without requiring any additional JavaScript code.
+The &amp;lsquo;/change&amp;rsquo; endpoint is simply returning a new &lt;code>&amp;lt;img&amp;gt;&lt;/code> HTML element with a new image URL fetched from the API.&lt;/p>
+&lt;h3 id="the-result">The result&lt;/h3>
+&lt;p>Here is what the final result looks like:&lt;/p>
+&lt;p>&lt;img src="https://noe-t.dev/posts/creating-a-go-htmx-app/result.gif"
+width="616"
+height="514"
+srcset="https://noe-t.dev/posts/creating-a-go-htmx-app/result_huc4ac6ac200a4986d84719f97ee1383ac_1205704_480x0_resize_box_1.gif 480w, https://noe-t.dev/posts/creating-a-go-htmx-app/result_huc4ac6ac200a4986d84719f97ee1383ac_1205704_1024x0_resize_box_1.gif 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="119"
+data-flex-basis="287px"
+>&lt;/p>
+&lt;p>You can find the entire code for this application in this &lt;a class="link" href="https://gist.github.com/noetarbouriech/004c1c79b6b8d3fb0d093b1b2ded0005" target="_blank" rel="noopener"
+>Github gist&lt;/a>.&lt;/p>
+&lt;blockquote>
+&lt;p>Cover picture by &lt;a class="link" href="https://unsplash.com/@xeniabogarova" target="_blank" rel="noopener"
+>Xenia Bogarova&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>
+&lt;/blockquote></description></item></channel></rss>
